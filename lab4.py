@@ -2,7 +2,9 @@ import pygame
 from pygame.draw import *
 
 pygame.init()
-screen = pygame.display.set_mode((500, 1000), 0, 32)
+screen = pygame.display.set_mode((400, 400), 0, 32)
+surf = pygame.display.set_mode((500, 1000), 0, 32)
+screen.set_colorkey((0, 0, 0))
 
 WHITE = (255, 250, 240)
 BLACK = (48, 44, 40)
@@ -17,8 +19,8 @@ PINK = (234, 175, 175)
 BRPURPLE = (229, 128, 255)
 
 
-rect(screen, (154, 206, 235), (0, 0, 500, 400))
-rect(screen, (178, 236, 93), (0, 400, 500, 600))
+rect(surf, (154, 206, 235), (0, 0, 500, 400))
+rect(surf, (178, 236, 93), (0, 400, 500, 600))
 for i in range(0, 100):
     sun = pygame.Surface((500, 400))
     sun.set_colorkey((255, 175, 45))
@@ -83,36 +85,37 @@ pygame.draw.ellipse(screen, PINK, (270, 560, 40, 20))
 pygame.draw.ellipse(screen, LIME, (266, 572, 38, 18))
 
 #TREES
-pygame.draw.polygon(screen, WHITE, [[40, 600], [60, 600], [60, 670], [40, 670]])
-pygame.draw.polygon(screen, BLACK, [[40, 600], [60, 600], [60, 670], [40, 670]], 1)
-pygame.draw.polygon(screen, WHITE, [[120, 600], [135, 600], [135, 690], [120, 690]])
-pygame.draw.polygon(screen, BLACK, [[120, 600], [135, 600], [135, 690], [120, 690]], 1)
-pygame.draw.polygon(screen, WHITE, [[220, 450], [240, 450], [240, 540], [220, 540]])
-pygame.draw.polygon(screen, BLACK, [[220, 450], [240, 450], [240, 540], [220, 540]], 1)
+pygame.draw.polygon(surf, WHITE, [[40, 600], [60, 600], [60, 670], [40, 670]])
+pygame.draw.polygon(surf, BLACK, [[40, 600], [60, 600], [60, 670], [40, 670]], 1)
+pygame.draw.polygon(surf, WHITE, [[120, 600], [135, 600], [135, 690], [120, 690]])
+pygame.draw.polygon(surf, BLACK, [[120, 600], [135, 600], [135, 690], [120, 690]], 1)
+pygame.draw.polygon(surf, WHITE, [[220, 450], [240, 450], [240, 540], [220, 540]])
+pygame.draw.polygon(surf, BLACK, [[220, 450], [240, 450], [240, 540], [220, 540]], 1)
 
-pygame.draw.ellipse(screen, GREEN, (50, 160, 160, 210))
-pygame.draw.ellipse(screen, LGREEN, (50, 160, 160, 210), 5)
-pygame.draw.ellipse(screen, GREEN, (100, 270, 180, 95))
-pygame.draw.ellipse(screen, LGREEN, (100, 270, 180, 95), 5)
-pygame.draw.ellipse(screen, GREEN, (30, 250, 120, 180))
-pygame.draw.ellipse(screen, LGREEN, (30, 250, 120, 180), 5)
-pygame.draw.ellipse(screen, GREEN, (120, 333, 200, 160))
-pygame.draw.ellipse(screen, LGREEN, (120, 333, 200, 160), 5)
-pygame.draw.ellipse(screen, GREEN, (10, 350, 100, 110))
-pygame.draw.ellipse(screen, LGREEN, (10, 350, 100, 110), 5)
-pygame.draw.ellipse(screen, GREEN, (30, 390, 200, 190))
-pygame.draw.ellipse(screen, LGREEN, (30, 390, 200, 190), 5)
-pygame.draw.ellipse(screen, GREEN, (0, 450, 100, 160))
-pygame.draw.ellipse(screen, LGREEN, (0, 450, 100, 160), 5)
-pygame.draw.ellipse(screen, GREEN, (73, 500, 110, 140))
-pygame.draw.ellipse(screen, LGREEN, (73, 500, 110, 140), 5)
+pygame.draw.ellipse(surf, GREEN, (50, 160, 160, 210))
+pygame.draw.ellipse(surf, LGREEN, (50, 160, 160, 210), 5)
+pygame.draw.ellipse(surf, GREEN, (100, 270, 180, 95))
+pygame.draw.ellipse(surf, LGREEN, (100, 270, 180, 95), 5)
+pygame.draw.ellipse(surf, GREEN, (30, 250, 120, 180))
+pygame.draw.ellipse(surf, LGREEN, (30, 250, 120, 180), 5)
+pygame.draw.ellipse(surf, GREEN, (120, 333, 200, 160))
+pygame.draw.ellipse(surf, LGREEN, (120, 333, 200, 160), 5)
+pygame.draw.ellipse(surf, GREEN, (10, 350, 100, 110))
+pygame.draw.ellipse(surf, LGREEN, (10, 350, 100, 110), 5)
+pygame.draw.ellipse(surf, GREEN, (30, 390, 200, 190))
+pygame.draw.ellipse(surf, LGREEN, (30, 390, 200, 190), 5)
+pygame.draw.ellipse(surf, GREEN, (0, 450, 100, 160))
+pygame.draw.ellipse(surf, LGREEN, (0, 450, 100, 160), 5)
+pygame.draw.ellipse(surf, GREEN, (73, 500, 110, 140))
+pygame.draw.ellipse(surf, LGREEN, (73, 500, 110, 140), 5)
+
+rscreen = pygame.transform.flip(screen, 1
+
 pygame.display.update()
 
 RUNNING = True
-
 while RUNNING:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             RUNNING = False
-
 pygame.quit()
