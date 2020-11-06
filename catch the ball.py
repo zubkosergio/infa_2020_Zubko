@@ -1,12 +1,14 @@
 import pygame
 from pygame.draw import *
 from random import randint
+import time
 pygame.init()
+id = input('print here your username')
 
-FPS = 1
-screen = pygame.display.set_mode((700, 700))
-f = open('score1.txt', 'w')
-f = open('score1.txt', 'r')
+
+FPS = 30
+Score = 0
+screen = pygame.display.set_mode((800, 800))
 
 
 RED = (255, 0, 0)
@@ -17,64 +19,89 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+font_name = pygame.font.match_font('verdana')
 
-global x, y, r
+def score_list():
+    f = open('score2.txt', 'a')
+    f.write(id + ' ' + str(Score) + '\n')
+    f.close()
 
-def new_ball():
-    global x, y, r
-    x = randint(10, 800)
-    y = randint(10, 700)
-    r = randint(20, 100)
-    color = COLORS[randint(0, 5)]
-    circle(screen, color, (x, y), r)
+def scorebar(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, CYAN)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
+
+def table_top(i):
+    return int(i[1])
 
 
-#def click(event):
-    #print(x, y, r)
+class Circle(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        a = randint(20, 120)
+        self.image = pygame.Surface((a, a))
+        self.image.set_colorkey(BLACK)
+        self.rad = a//2
+        color = COLORS[randint(0, 5)]
+        self.circle = pygame.draw.circle(self.image, color, (a//2, a//2), a//2)
+        self.rect = self.image.get_rect()
+        self.rect.center = (randint(100, 700), randint(100, 700))
+        self.speedx = randint(-10, 15)
+        self.speedy = randint(-10, 10)
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if self.rect.right > 800:
+            self.speedx = randint(-10, 1)
+        if self.rect.left < 0:
+            self.speedx = randint(1, 10)
+        if self.rect.bottom > 800:
+            self.speedy = randint(-10, -1)
+        if self.rect.top < 0:
+            self.speedy = randint(1, 10)
 
-#def coords(event):
-    #for event in pygame.event.get():
-        #print(event.pos[0], event.pos[1])
 
 pygame.display.update()
 clock = pygame.time.Clock()
+pygame.mixer.init()
+all_sprites = pygame.sprite.Group()
+circles = pygame.sprite.Group()
+rand_circ = Circle()
+circles.add(rand_circ)
+all_sprites.add(rand_circ)
+s = time.time()
 finished = False
-
-Score = []
 while not finished:
     clock.tick(FPS)
+    if s < time.time() - 60:
+        finished = True
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            def click():
-                print(x, y, r)
-            def coords():
-                for event in pygame.event.get():
-                    print(event.pos[0], event.pos[1])
-            def great():
-                if (((x - event.pos[0])**2) + ((y - event.pos[1])**2) + r**2) < 2 * r ** 2:
-                    print('great')
-                    Score.append(1)
-                    print('счёт:', len(Score))
-                else:
-                    print('try again later')
-            for line in f:
-                print('игрок1:', len(Score))
+            for sprite in circles:
+                if (sprite.rect.center[0] - event.pos[0])**2 + (sprite.rect.center[1] - event.pos[1])**2 < sprite.rad**2:
+                    sprite.kill()
+                    Score += 1
 
-            click()
-            coords()
-            great()
+    if s + 1 > time.time():
+        rand_circ = Circle()
+        circles.add(rand_circ)
+        all_sprites.add(rand_circ)
+    all_sprites.update()
 
 
 
 
-
-
-    new_ball()
     pygame.display.update()
     screen.fill(BLACK)
+    score_list()
+    all_sprites.draw(screen)
+    pygame.display.flip()
+    scorebar(screen, str(Score) + ' killed, remains 00:' + str(-time.time() + 60 + s), 30, 800 // 2, 10)
 
 
-f.close()
+
 pygame.quit()
